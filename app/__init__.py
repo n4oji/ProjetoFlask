@@ -1,18 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app.routes.user_routes import user_bp
-from app.models.blacklist import TokenBlacklist
 from flask_jwt_extended import JWTManager
 
 db = SQLAlchemy()
 jwt = JWTManager()
-
-@jwt.token_in_blocklist_loader
-def check_if_token_in_blacklist(jwt_header, jwt_payload):
-    jti = jwt_payload['jti']
-    token = TokenBlacklist.query.filter_by(jti=jti).first()
-    
-    return token is not None
 
 def create_app():
     app = Flask(__name__)
@@ -23,6 +14,7 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
 
+    from app.routes.user_routes import user_bp
     app.register_blueprint(user_bp, url_prefix='/api/users')
 
     with app.app_context():
