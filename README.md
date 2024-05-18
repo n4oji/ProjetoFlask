@@ -4,4 +4,4 @@ Para rodar o projeto, é necessário colocar uma JWT_SECRET_KEY no .env e ao cri
 
 
 ## imagem do database
-<img src="flask_databse.png">
+<img src="flask_database.png">
