@@ -1,15 +1,20 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
+import os
+from dotenv import load_dotenv
 
 db = SQLAlchemy()
 jwt = JWTManager()
 
 def create_app():
+    load_dotenv()
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['JWT_SECRET_KEY'] = '346f1cc60c2c434f93ce02946f5a562f'
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    migrate = Migrate(app, db)
 
     db.init_app(app)
     jwt.init_app(app)
