@@ -13,6 +13,7 @@ def register():
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    is_admin = bool(data.get('is_admin')) or False
 
     if not username:
         return jsonify({"msg": "Usuário não pode estar vazio"}), 400
@@ -26,7 +27,7 @@ def register():
         return jsonify({"msg": "Email já está em uso"}), 400
     
 
-    new_user = User(username=username, email=email)
+    new_user = User(username=username, email=email, is_admin=is_admin)
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
