@@ -55,3 +55,11 @@ def logout():
     db.session.commit()
 
     return jsonify({"msg": "Desconectado"}), 200
+
+
+@user_bp.route('/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    user.delete()
+    return jsonify({"msg": "Usuário deletado"}), 200
